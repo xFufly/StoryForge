@@ -1,4 +1,5 @@
 {
     "language": "en",
-    "discord_token": "TOKEN_HERE"
+    "discord_token": "TOKEN_HERE",
+    "port": 3000
 }
