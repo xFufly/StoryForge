@@ -1,0 +1,25 @@
+{
+  "name": "storyforge",
+  "version": "1.0.0",
+  "description": "Logiciel de création et d'édition de User Stories en SCRUM",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xFufly/StoryForge.git"
+  },
+  "keywords": [
+    "scrum",
+    "agile",
+    "userstory",
+    "productowner"
+  ],
+  "author": "DIDELOT Tim",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xFufly/StoryForge/issues"
+  },
+  "homepage": "https://github.com/xFufly/StoryForge#readme"
+}
