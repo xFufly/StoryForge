@@ -5,7 +5,7 @@ function route(req, res) {
     };
     
     // Render the 'index' view and pass data to it
-    res.render('index', data);
+    res.render('pages/index', data);
 }
 
 module.exports = route;
