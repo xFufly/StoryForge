@@ -1,5 +1,10 @@
 {
     "webui": {
-        "listening": "Webui listening on port"
+        "listening": "Webui listening on port",
+        "widgets": {
+            "projects": {
+                "title": "Your projects"
+            }
+        }
     }
 }

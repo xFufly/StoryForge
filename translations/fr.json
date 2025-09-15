@@ -1,5 +1,10 @@
 {
     "webui": {
-        "listening": "L'UI Web écoute sur le port"
+        "listening": "L'UI Web écoute sur le port",
+        "widgets": {
+            "projects": {
+                "title": "Vos projets"
+            }
+        }
     }
 }
