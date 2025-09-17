@@ -4,7 +4,7 @@
   "description": "Logiciel de création et d'édition de User Stories en SCRUM",
   "main": "index.js",
   "scripts": {
-    "webui": "node ./src/webui/server.js"
+    "start": "node ./src/app/server.js"
   },
   "repository": {
     "type": "git",

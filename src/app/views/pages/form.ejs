@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include("../partials/head"); %>
+    </head>
+    <body>
+        <header>
+            <%- include("../partials/header"); %>
+        </header>
+
+        <main class="liquid-glass">
+            <header>
+                <h2><%= title %></h2>
+            </header>
+            <p><%= form.desc %></p>
+
+            <form 
+                class="liquid-glass" 
+                action="<%= form.action || '#' %>" 
+                method="POST"
+            >
+                <% if (form.fields && form.fields.length > 0) { %>
+                    <% for (let input of form.fields) { %>
+                        <p><b><%= input.name %></b></p>
+                        <input 
+                            type="<%= input.type || 'text' %>" 
+                            name="<%= input.id %>" 
+                            placeholder="<%= input.placeholder || '' %>"
+                            value="<%= input.value || '' %>">
+                    <% } %>
+                <% } %>
+
+                <input type="submit" value="<%= form.submitLabel %>">
+            </form>
+        </main>
+
+        <footer>
+            <%- include("../partials/footer"); %>
+        </footer>
+    </body>
+</html>

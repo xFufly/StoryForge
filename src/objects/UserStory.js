@@ -39,6 +39,22 @@ class UserStory {
     setStoryPoints(points) { this.#storyPoints = points; }
 
     isDone() { return this.#status === "Done"; }
+
+    toJSON() {
+        return {
+            id: this.#id,
+            title: this.#title,
+            description: this.#description,
+            priority: this.#priority,
+            status: this.#status,
+            storyPoints: this.#storyPoints,
+            creationDate: this.#creationDate
+        };
+    }
+
+    static fromJSON(json) {
+        return new UserStory(json.id, json.title, json.description, json.priority, json.storyPoints, json.status);
+    }
 }
 
 module.exports = UserStory;

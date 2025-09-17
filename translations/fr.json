@@ -3,8 +3,37 @@
         "listening": "L'UI Web écoute sur le port",
         "widgets": {
             "projects": {
-                "title": "Vos projets"
+                "title": "Vos projets",
+                "none": "Vous n'avez encore aucun projet.",
+                "create": {
+                    "title": "Créer un nouveau projet",
+                    "desc": "Commencez votre aventure en créant un nouveau projet.",
+                    "button": "Nouveau projet",
+                    "field": {
+                        "name": {
+                            "name": "Nom du projet",
+                            "placeholder": "Entrez le nom de votre projet"
+                        },
+                        "description": {
+                            "name": "Description du projet",
+                            "placeholder": "Décrivez brièvement votre projet"
+                        }
+                    }
+                }
             }
+        }
+    },
+    "api": {
+        "errors": {
+            "missingParameters": "Paramètres manquants",
+            "projectExists": "Un projet avec ce nom existe déjà",
+            "projectNotFound": "Projet non trouvé",
+            "invalidData": "Données fournies invalides"
+        },
+        "successes": {
+            "projectCreated": "Projet créé avec succès",
+            "projectDeleted": "Projet supprimé avec succès",
+            "projectUpdated": "Projet mis à jour avec succès"
         }
     }
 }

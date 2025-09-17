@@ -12,6 +12,17 @@ class Sprint {
 
     setBeginDate(date) { this.#beginDate = date; }
     setBacklog(backlog) { this.#backlog = backlog; }
+
+    toJSON() {
+        return {
+            beginDate: this.#beginDate,
+            backlog: this.#backlog
+        };
+    }
+
+    static fromJSON(json) {
+        return new Sprint(json.beginDate, json.backlog);
+    }
 };
 
 module.exports = Sprint;

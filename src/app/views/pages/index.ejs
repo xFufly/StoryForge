@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include("../partials/head"); %>
+    </head>
+    <body>
+        <header>
+            <%- include("../partials/header"); %>
+        </header>
+        <main class="liquid-glass">
+            <header>
+                <h2> <%= lang.title %> </h2>
+                <button onclick="document.location='/createProject';";">+</button>
+            </header>
+            <section>
+                <% if (projects.length > 0) { %>
+                    <% for (let project of projects) { %>
+                        <article class="liquid-glass" onclick="document.location='/project/<%= project.name %>';">
+                            <p><b> <%= project.name %> </b></p>
+                            <p><i> <%= project.description %> </i></p>
+                        </article>
+                    <% } %>
+                <% } else { %>
+                    <p> <%= lang.none %> </p>
+                <% } %>
+            </section>
+        </main>
+        <footer>
+            <%- include("../partials/footer"); %>
+        </footer>
+    </body>
+</html>

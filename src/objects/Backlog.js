@@ -41,6 +41,24 @@ class Backlog {
         this.#version++;
         this.updateDate();
     }
+
+    toJSON() {
+        return {
+            creationDate: this.#creationDate,
+            lastVersionDate: this.#lastVersionDate,
+            version: this.#version,
+            userStories: this.#userStories ? this.#userStories.map(s => s.toJSON()) : []
+        };
+    }
+    
+    static fromJSON(json) {
+        const backlog = new Backlog();
+        backlog.#creationDate = json.creationDate;
+        backlog.#lastVersionDate = json.lastVersionDate;
+        backlog.#version = json.version;
+        backlog.#userStories = json.userStories.map(s => UserStory.fromJSON(s));
+        return backlog;
+    }
 }
 
 module.exports = Backlog;

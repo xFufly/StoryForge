@@ -48,6 +48,34 @@ class Product {
     removeDev(dev) { this.#devs = this.#devs.filter(d => d !== dev); }
     getDevCount() { return this.#devs.length; }
     hasDev(dev) { return this.#devs.includes(dev); }
+
+    toJSON() {
+        return {
+            name: this.#name,
+            description: this.#description,
+            po: this.#po,
+            sm: this.#sm,
+            sprintDays: this.#sprintDays,
+            devs: this.#devs,
+            backlog: this.#backlog.toJSON(),
+            sprints: this.#sprints.map(s => s.toJSON())
+        };
+    }
+
+    static fromJSON(json) {
+        const product = new Product(
+            json.name,
+            json.description,
+            json.po,
+            json.sm,
+            json.sprintDays,
+            json.devs
+        );
+        product.#backlog = Backlog.fromJSON(json.backlog);
+        product.#sprints = json.sprints.map(s => Sprint.fromJSON(s));
+        return product;
+    }
+
 }
 
 module.exports = Product;
