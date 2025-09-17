@@ -4,7 +4,7 @@ Logiciel de création et d'édition de User Stories en SCRUM
 ## Où en est le projet ?
 Il est encore en phase de création, seulement les classes principales ont été codées.
 
-## Fonctionnalités
+## Fonctionnalités principales
 - Interface graphique ⏱️
 - Création d'un produit (projet) ✅
 - Création d'une userstory ❌
