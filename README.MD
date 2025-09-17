@@ -5,8 +5,8 @@ Logiciel de création et d'édition de User Stories en SCRUM
 Il est encore en phase de création, seulement les classes principales ont été codées.
 
 ## Fonctionnalités
-- Interface graphique ❌
-- Création d'un produit (projet) ❌
+- Interface graphique ⏱️
+- Création d'un produit (projet) ✅
 - Création d'une userstory ❌
 - Description et édition des userstories à l'aide de mots clés (En tant que, Je veux, Dans le but) ❌ 
 - Edition des tests avec un langage GHERKIN affiné (Etant donné, Quand/Lorsque, Et que, Mais, Alors, Et) ❌
