@@ -43,7 +43,7 @@ main > header {
     align-items: center;
 }
 
-main > header > button , section article > button {
+main > header > button , section article button {
     background-color: lightyellow;
     height: 50px;
     width: 50px;
@@ -59,12 +59,12 @@ main > section article {
     justify-content: space-between;
 }
 
-main > header > button:hover, section > article > button:hover {
+main > header > button:hover, section > article button:hover {
     background-color: antiquewhite;
     cursor: pointer;
 }
 
-main > header > button:active, section > article > button:active {
+main > header > button:active, section > article button:active {
     background-color: bisque;
 }
 

@@ -27,7 +27,7 @@
                         <div style="width: 100%;">
                             <p><b> <%= lang.backlog %> </b></p>
                             <hr>
-                            <p><b> <%= lang.counter.stories %>: </b> <%= project.backlog.userStories %> </p>
+                            <p><b> <%= lang.counter.stories %>: </b> <%= project.backlog.userStories.length %> </p>
                             <button style="width: 100%; font-size: 100%; cursor: pointer;" onclick="document.location='/stories?project=<%=project.name%>';"> <%= lang.counter.stories %> </button>
                         </div>
                     </article>
