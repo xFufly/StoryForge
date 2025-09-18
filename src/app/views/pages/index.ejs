@@ -15,9 +15,12 @@
             <section>
                 <% if (projects.length > 0) { %>
                     <% for (let project of projects) { %>
-                        <article class="liquid-glass" onclick="document.location='/project/<%= project.name %>';">
-                            <p><b> <%= project.name %> </b></p>
-                            <p><i> <%= project.description %> </i></p>
+                        <article class="liquid-glass" style="margin-bottom: 20px;">
+                            <div>
+                                <p><b> <%= project.name %> </b></p>
+                                <p><i> <%= project.description %> </i></p>
+                            </div>
+                            <button onclick="document.location='/project?project=<%= project.name %>';">&gt;</button>
                         </article>
                     <% } %>
                 <% } else { %>

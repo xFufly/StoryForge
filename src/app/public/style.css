@@ -14,6 +14,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    padding-bottom: 70px;
 }
 
 
@@ -40,7 +41,7 @@ main > header {
     align-items: center;
 }
 
-main > header > button {
+main > header > button , section article > button {
     background-color: lightyellow;
     height: 50px;
     width: 50px;
@@ -49,25 +50,40 @@ main > header > button {
     font-size: 150%;
 }
 
-main > header > button:hover {
+main > section article {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+main > header > button:hover, section > article > button:hover {
     background-color: antiquewhite;
     cursor: pointer;
 }
 
-main > header > button:active {
+main > header > button:active, section > article > button:active {
     background-color: bisque;
 }
 
 footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
     height: 60px;
     text-align: center;
+    margin-top: 70px;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+footer hr {
+    margin: 0;
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .liquid-glass {
-    position: relative;
     background: linear-gradient(
         to bottom right,
         rgba(255, 255, 255, 0.25),
@@ -98,13 +114,7 @@ footer {
 }
 
 .liquid-glass::before {
-    content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: inherit;
     background: linear-gradient(145deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
     pointer-events: none;
     z-index: 1;

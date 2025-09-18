@@ -19,6 +19,20 @@
                             "placeholder": "Briefly describe your project"
                         }
                     }
+                },
+                "po": "Product Owner",
+                "sm": "Scrum Master",
+                "dev": "Development Team",
+                "back": "Back to projects",
+                "edit": "Edit Project",
+                "delete": "Delete Project",
+                "save": "Save Changes",
+                "backlog": "Backlog",
+                "deleteConfirm": "Are you sure you want to delete this project? This action cannot be undone.",
+                "counter": {
+                    "stories": "User Stories",
+                    "tasks": "Tasks",
+                    "sprints": "Sprints"
                 }
             }
         }

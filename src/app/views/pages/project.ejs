@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include("../partials/head"); %>
+    </head>
+    <body>
+        <header>
+            <%- include("../partials/header"); %>
+        </header>
+        <main class="liquid-glass">
+            <header>
+                <h2> <%= project.name %> </h2>
+                <button onclick="document.location='/'">H</button>
+            </header>
+            <section class="liquid-glass">
+                <% if (project) { %>
+                    <article class="liquid-glass" style="margin-bottom: 20px;">
+                        <div style="width: 100%;">
+                            <p><i> <%= project.description %> </i></p>
+                            <hr>
+                            <p><b> <%= lang.po %>: </b> <%= project.po %> </p>
+                            <p><b> <%= lang.sm %>: </b> <%= project.sm %> </p>
+                        </div>
+                    </article>
+
+                    <article class="liquid-glass">
+                        <div style="width: 100%;">
+                            <p><b> <%= lang.backlog %> </b></p>
+                            <hr>
+                            <p><b> <%= lang.counter.stories %>: </b> <%= project.backlog.userstories || 0 %> </p>
+                            <button style="width: 100%; font-size: 100%; cursor: pointer;" onclick="document.location='/stories?project=<%=project.name%>;'"> <%= lang.counter.stories %> </button>
+                        </div>
+                    </article>
+                <% } else { %>
+                    <p> Error 404 </p>
+                <% } %>
+            </section>
+        </main>
+        <footer>
+            <%- include("../partials/footer"); %>
+        </footer>
+    </body>
+</html>
