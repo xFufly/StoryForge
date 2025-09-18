@@ -10,7 +10,7 @@
         <main class="liquid-glass">
             <header>
                 <h2> <%= project.name %> </h2>
-                <button onclick="document.location='/'">H</button>
+                <button onclick="document.location='/'">🏠</button>
             </header>
             <section class="liquid-glass">
                 <% if (project) { %>
@@ -27,8 +27,8 @@
                         <div style="width: 100%;">
                             <p><b> <%= lang.backlog %> </b></p>
                             <hr>
-                            <p><b> <%= lang.counter.stories %>: </b> <%= project.backlog.userstories || 0 %> </p>
-                            <button style="width: 100%; font-size: 100%; cursor: pointer;" onclick="document.location='/stories?project=<%=project.name%>;'"> <%= lang.counter.stories %> </button>
+                            <p><b> <%= lang.counter.stories %>: </b> <%= project.backlog.userStories %> </p>
+                            <button style="width: 100%; font-size: 100%; cursor: pointer;" onclick="document.location='/stories?project=<%=project.name%>';"> <%= lang.counter.stories %> </button>
                         </div>
                     </article>
                 <% } else { %>

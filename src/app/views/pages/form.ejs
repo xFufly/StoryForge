@@ -11,14 +11,18 @@
         <main class="liquid-glass">
             <header>
                 <h2><%= title %></h2>
-                <button onclick="document.location='/'">H</button>
+                <button onclick="document.location='/'">🏠</button>
+                <% if (typeof back !== 'undefined') { %>
+                    <button onclick="document.location='<%= back %>'">🔙</button>
+                <% } %>
             </header>
             <p><%= form.desc %></p>
 
             <form 
                 class="liquid-glass" 
                 action="<%= form.action || '#' %>" 
-                method="POST"
+                method="POST",
+                style="width: 75%;"
             >
                 <% if (form.fields && form.fields.length > 0) { %>
                     <% for (let input of form.fields) { %>
@@ -27,7 +31,9 @@
                             type="<%= input.type || 'text' %>" 
                             name="<%= input.id %>" 
                             placeholder="<%= input.placeholder || '' %>"
-                            value="<%= input.value || '' %>">
+                            value="<%= input.value || '' %>"
+                            <% if (input.required) { %> required <% } %>
+                        >
                     <% } %>
                 <% } %>
 

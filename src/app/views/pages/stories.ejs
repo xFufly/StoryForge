@@ -9,30 +9,27 @@
         </header>
         <main class="liquid-glass">
             <header>
-                <h2> <%= project.name %> </h2>
-                <button onclick="document.location='/'">H</button>
+                <h2> <%= projectName %> </h2>
+                <button onclick="document.location='/'">🏠</button>
+                <button onclick="document.location='/project?project=<%=projectName%>'">🔙</button>
             </header>
             <section class="liquid-glass">
-                <% if (project) { %>
-                    <article class="liquid-glass" style="margin-bottom: 20px;">
-                        <div style="width: 100%;">
-                            <p><i> <%= project.description %> </i></p>
-                            <hr>
-                            <p><b> <%= lang.po %>: </b> <%= project.po %> </p>
-                            <p><b> <%= lang.sm %>: </b> <%= project.sm %> </p>
-                        </div>
-                    </article>
-
-                    <article class="liquid-glass">
-                        <div style="width: 100%;">
-                            <p><b> <%= lang.backlog %> </b></p>
-                            <hr>
-                            <p><b> <%= lang.counter.stories %>: </b> <%= project.backlog.userstories || 0 %> </p>
-                            <button style="width: 100%; font-size: 100%; cursor: pointer;"> <%= lang.counter.stories %> </button>
-                        </div>
+                <article>
+                    <h3> <%= lang.userstories.title %></h3>
+                    <button onclick="document.location='/createStory?project=<%=projectName%>'">+</button>
+                </article>
+                <% if (userstories.length > 0) { %>
+                    <% for (let story of userstories) { %>
+                        <article class="liquid-glass">
+                            <div style="margin-bottom: 15px;">
+                                <p><b> <%= story.title %> </b></p>
+                                <p><i> <%= story.description %> </i></p>
+                            </div>
+                        </article>
+                    <% } %>
                     </article>
                 <% } else { %>
-                    <p> Error 404 </p>
+                    <p> <%= lang.userstories.none %> </p>
                 <% } %>
             </section>
         </main>

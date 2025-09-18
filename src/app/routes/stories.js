@@ -15,11 +15,12 @@ function route(req, res) {
     }
 
     const data = {
-        lang: translations.webui.widgets.projects,
-        stories: projects[0].userstories
+        lang: translations.webui.widgets,
+        userstories: projects[0].backlog.userStories,
+        projectName: projects[0].name
     };
     
-    res.render('pages/project', data);
+    res.render('pages/stories', data);
 }
 
 module.exports = route;
