@@ -91,6 +91,11 @@ footer hr {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+footer a {
+    text-decoration: none;
+    color: rebeccapurple;
+}
+
 .liquid-glass {
     background: linear-gradient(
         to bottom right,
