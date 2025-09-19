@@ -19,6 +19,7 @@ const createProjectRoute = require("./routes/createProject");
 const projectRoute = require("./routes/project");
 const storiesRoute = require("./routes/stories");
 const createStoryRoute = require("./routes/createStory");
+const editStoryRoute = require("./routes/editStory");
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -40,11 +41,13 @@ app.set('views', './src/app/views');
 // Set the public directory (where static files will be stored)
 app.use(express.static('./src/app/public'))
 
+// Define routes
 app.get('/', indexRoute);
 app.get('/createProject', createProjectRoute);
 app.get('/project', projectRoute);
 app.get('/stories', storiesRoute);
 app.get('/createStory', createStoryRoute);
+app.get('/editStory', editStoryRoute);
 
 // Start the server
 

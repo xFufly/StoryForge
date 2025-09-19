@@ -24,8 +24,6 @@ function route(req, res) {
 
     let projects = localdata.projects || [];
 
-    console.log(projects);
-
     const projectIndex = projects.findIndex(p => p.name === projectName);
 
     if (projectIndex === -1) {

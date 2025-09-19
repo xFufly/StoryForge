@@ -26,8 +26,8 @@
                                 <p><i> <%= story.description %> </i></p>
                             </div>
                             <div">
-                                <button>🗑️</button>
-                                <button>📝</button>
+                                <button onclick="document.location = '/deleteStory?project=<%=projectName%>&id=<%=story.id%>';">🗑️</button>
+                                <button onclick="document.location = '/editStory?project=<%=projectName%>&id=<%=story.id%>';">📝</button>
                             </div>
                         </article>
                     <% } %>

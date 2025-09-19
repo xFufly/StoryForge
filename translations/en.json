@@ -65,8 +65,33 @@
                         }
                     }
                 },
-                "edit": "Edit User Story",
-                "delete": "Delete User Story",
+                "edit": {
+                    "title": "Edit User Story",
+                    "desc": "Modify the details of your user story.",
+                    "next": "Next",
+                    "fields": {
+                        "title": {
+                            "name": "Title",
+                            "placeholder": "Enter the title of the user story"
+                        },
+                        "description": {
+                            "name": "Description",
+                            "placeholder": "Describe the user story in detail"
+                        },
+                        "priority": {
+                            "name": "Priority",
+                            "placeholder": "Set the priority level"
+                        },
+                        "status": {
+                            "name": "Status",
+                            "placeholder": "Select the current status"
+                        },
+                        "points": {
+                            "name": "Story Points",
+                            "placeholder": "Estimate the effort required"
+                        }
+                    }
+                },
                 "save": "Save Changes",
                 "backlog": "Back to Backlog",
                 "deleteConfirm": "Are you sure you want to delete this user story? This action cannot be undone."
