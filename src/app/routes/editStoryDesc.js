@@ -35,20 +35,21 @@ function route(req, res) {
     // Get the current story data
     const currentStory = projects[projectIndex].backlog.userStories[storyIndex];
 
+    // Get the current story instructions data
+    const currentInstructions = currentStory.baseInstructions || { role: '', goal: '', benefit: '' };
+
     const data = {
         title: projectName + " | " + translations.webui.widgets.userstories.edit.title,
         back: `/stories?project=${projectName}`,
         form: {
             desc: translations.webui.widgets.userstories.edit.desc,
-            action: `/api/story/infoEdit?project=${projectName}&id=${storyId}`,
+            action: `/api/story/descEdit?project=${projectName}&id=${storyId}`,
             submitLabel: translations.webui.widgets.userstories.edit.next,
-            // Set the fields value by default to the current story values
+            // Set the fields value by default to the current story instructions values
             fields: [
-                { name: translations.webui.widgets.userstories.edit.fields.title.name, id: "title", type: "text", required: true, value: currentStory.title },
-                { name: translations.webui.widgets.userstories.edit.fields.description.name, id: "description", type: "textarea", required: false, value: currentStory.description },
-                { name: translations.webui.widgets.userstories.edit.fields.priority.name, id: "priority", type: "number", required: true, value: currentStory.priority },
-                { name: translations.webui.widgets.userstories.edit.fields.points.name, id: "points", type: "number", required: true, value: currentStory.storyPoints },
-                { name: translations.webui.widgets.userstories.edit.fields.status.name, id: "status", type: "text", required: true, value: currentStory.status }
+                { name: translations.webui.widgets.userstories.edit.fields.as.name, id: "as", type: "text", required: true, value: currentInstructions.role },
+                { name: translations.webui.widgets.userstories.edit.fields.IWantsTo.name, id: "IWantsTo", type: "text", required: true, value: currentInstructions.goal },
+                { name: translations.webui.widgets.userstories.edit.fields.SoThat.name, id: "SoThat", type: "text", required: false, value: currentInstructions.benefit }
             ]
         }
     };

@@ -89,6 +89,18 @@
                         "points": {
                             "name": "Story Points",
                             "placeholder": "Estimate the effort required"
+                        },
+                        "as": {
+                            "name": "As a",
+                            "placeholder": "Define the user role"
+                        },
+                        "IWantsTo": {
+                            "name": "I want to",
+                            "placeholder": "Describe the desired action"
+                        },
+                        "SoThat": {
+                            "name": "So that",
+                            "placeholder": "Explain the benefit or reason"
                         }
                     }
                 },

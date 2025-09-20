@@ -20,6 +20,7 @@ const projectRoute = require("./routes/project");
 const storiesRoute = require("./routes/stories");
 const createStoryRoute = require("./routes/createStory");
 const editStoryRoute = require("./routes/editStory");
+const editStoryDescRoute = require("./routes/editStoryDesc");
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -28,9 +29,13 @@ app.use(express.urlencoded({ extended: true }));
 // API Routes
 const createProjectApiRoute = require("./routes/api/project/create");
 const createStoryApiRoute = require("./routes/api/story/create");
+const editStoryInfoApiRoute = require("./routes/api/story/infoEdit");
+const editStoryDescApiRoute = require("./routes/api/story/descEdit");
 
 app.use('/api/projects/create', createProjectApiRoute);
 app.use('/api/story/create', createStoryApiRoute);
+app.use('/api/story/infoEdit', editStoryInfoApiRoute);
+app.use('/api/story/descEdit', editStoryDescApiRoute);
 
 // Set the view engine to EJS
 app.set('view engine', 'ejs');
@@ -48,6 +53,7 @@ app.get('/project', projectRoute);
 app.get('/stories', storiesRoute);
 app.get('/createStory', createStoryRoute);
 app.get('/editStory', editStoryRoute);
+app.get('/editStoryDesc', editStoryDescRoute);
 
 // Start the server
 

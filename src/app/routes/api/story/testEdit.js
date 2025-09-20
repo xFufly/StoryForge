@@ -1,21 +1,22 @@
-// Route handler for creating a new user story
+// Route handler for editing a user story's tests
 const UserStory = require('../../../../objects/UserStory');
 const { language } = require("../../../../../config.json");
 const translations = require(`../../../../../translations/${language}.json`);
 const fs = require('fs');
 const path = require('path');
 
-
 function route(req, res) {
     const projectName = req.query.project;
-    if (!projectName) {
-        return res.status(400).send('Project query parameter is required');
+    const storyId = parseInt(req.query.id, 10);
+
+    if (!projectName || isNaN(storyId)) {
+        return res.status(400).send('Project and valid storyId query parameters are required');
     }
 
-    const { title, description, priority, points, status } = req.body;
+    const { tests } = req.body;
 
-    if (!title || !priority || !points || !status) {
-        return res.status(400).send('Missing required fields: title, priority, points, status');
+    if (!tests) {
+        return res.status(400).send('Missing required field: tests');
     }
 
     const dataPath = path.join(__dirname, '../../../../../data.json');
@@ -30,8 +31,13 @@ function route(req, res) {
         return res.status(404).send('Project not found');
     }
 
-    const newStory = new UserStory(projects[projectIndex].backlog.userStories.length, title, description || '', priority, parseInt(points), status);
-    projects[projectIndex].backlog.userStories.push(newStory.toJSON());
+    const storyIndex = projects[projectIndex].backlog.userStories.findIndex(s => s.id === storyId);
+
+    if (storyIndex === -1) {
+        return res.status(404).send('User story not found');
+    }
+
+    // TODO : Get tests from req.body
 
     fs.writeFileSync(dataPath, JSON.stringify(localdata, null, 2));
 

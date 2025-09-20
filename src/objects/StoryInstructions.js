@@ -36,7 +36,7 @@ class StoryInstructions {
     }
 
     static fromJSON(json) {
-        return new StoryInstruction(json.role, json.goal, json.benefit);
+        return new StoryInstructions(json.role, json.goal, json.benefit);
     }
 }
 
