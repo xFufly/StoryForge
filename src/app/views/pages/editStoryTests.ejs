@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include("../partials/head"); %>
+        <style>
+            input[type="text"] {
+                width: 100%;
+                padding: 8px;
+                margin: 4px 0;
+                box-sizing: border-box;
+                border: 2px solid #ccc;
+                border-radius: 4px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <%- include("../partials/header"); %>
+        </header>
+        <main class="liquid-glass">
+            <header>
+                <h2> <%= projectName %> </h2>
+                <button onclick="document.location='/'">🏠</button>
+                <button onclick="document.location='/editStoryDesc?project=<%=projectName%>&id=<%=storyId%>';">🔙</button>
+            </header>
+            <section class="liquid-glass">
+                <h3> <%= lang.userstories.edit.title %> </h3>
+                <article style="display: flex; flex-direction: column; align-items: center;">
+                    <form action="/api/story/testsEdit?project=<%=projectName%>&id=<%=storyId%>" method="POST" style="width: 75%;">
+                        <!--
+                            Form : 
+                            - Given ...
+                            - When ...
+                            - And that ... (0 to multiple, possibility to add more)
+                            - But ...
+                            - Then ...
+                            - And ... (0 to multiple, possibility to add more)
+                        -->
+                        <p><b> <%= lang.userstories.edit.fields.given.name %> </b></p>
+                        <input 
+                            type="text" 
+                            name="given" 
+                            placeholder="<%= lang.userstories.edit.fields.given.placeholder %>"
+                            value="<%= currentTests.given || '' %>"
+                            required
+                        >
+                        <p><b> <%= lang.userstories.edit.fields.when.name %> </b></p>
+                        <input 
+                            type="text" 
+                            name="when" 
+                            placeholder="<%= lang.userstories.edit.fields.when.placeholder %>"
+                            value="<%= currentTests.when || '' %>"
+                            required
+                        >
+                        <div id="and-container">
+                            <% if (currentTests.and && currentTests.and.length > 0) { %>
+                                <% for (let i = 0; i < currentTests.and.length; i++) { %>
+                                    <p><b> <%= lang.userstories.edit.fields.and.name %> </b></p>
+                                    <input 
+                                        type="text" 
+                                        name="and[]" 
+                                        placeholder="<%= lang.userstories.edit.fields.and.placeholder %>"
+                                        value="<%= currentTests.and[i] || '' %>"
+                                    >
+                                <% } %>
+                            <% } else { %>
+                                <p><b> <%= lang.userstories.edit.fields.and.name %> </b></p>
+                                <input 
+                                    type="text" 
+                                    name="and[]" 
+                                    placeholder="<%= lang.userstories.edit.fields.and.placeholder %>"
+                                >
+                            <% } %>
+                        </div>
+                        <button type="button" onclick="addAndField()">+ <%= lang.userstories.edit.fields.and.add %></button>
+                        <p><b> <%= lang.userstories.edit.fields.but.name %> </b></p>
+                        <input 
+                            type="text" 
+                            name="but" 
+                            placeholder="<%= lang.userstories.edit.fields.but.placeholder %>"
+                            value="<%= currentTests.but || '' %>"
+                        >
+                        <p><b> <%= lang.userstories.edit.fields.then.name %> </b></p>
+                        <input 
+                            type="text" 
+                            name="then" 
+                            placeholder="<%= lang.userstories.edit.fields.then.placeholder %>"
+                            value="<%= currentTests.then || '' %>"
+                            required
+                        >
+                        <div id="andThen-container">
+                            <% if (currentTests.andThen && currentTests.andThen.length > 0) { %>
+                                <% for (let i = 0; i < currentTests.andThen.length; i++) { %>
+                                    <p><b> <%= lang.userstories.edit.fields.andThen.name %> </b></p>
+                                    <input 
+                                        type="text" 
+                                        name="andThen[]" 
+                                        placeholder="<%= lang.userstories.edit.fields.andThen.placeholder %>"
+                                        value="<%= currentTests.andThen[i] || '' %>"
+                                    >
+                                <% } %>
+                            <% } else { %>
+                                <p><b> <%= lang.userstories.edit.fields.andThen.name %> </b></p>
+                                <input 
+                                    type="text" 
+                                    name="andThen[]" 
+                                    placeholder="<%= lang.userstories.edit.fields.andThen.placeholder %>"
+                                >
+                            <% } %>
+                        </div>
+                        <button type="button" onclick="addAndThenField()">+ <%= lang.userstories.edit.fields.andThen.add %></button>
+                        <br><br>
+                        <input type="submit" value="<%= lang.userstories.edit.next %>">
+                    </form>
+                </article>
+            </section>
+        </main>
+    </body>
+    <script>
+        function addAndField() {
+            const container = document.getElementById('and-container');
+            const p = document.createElement('p');
+            p.innerHTML = '<b> <%= lang.userstories.edit.fields.and.name %> </b>';
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'and[]';
+            input.placeholder = '<%= lang.userstories.edit.fields.and.placeholder %>';
+            container.appendChild(p);
+            container.appendChild(input);
+        }
+
+        function addAndThenField() {
+            const container = document.getElementById('andThen-container');
+            const p = document.createElement('p');
+            p.innerHTML = '<b> <%= lang.userstories.edit.fields.andThen.name %> </b>';
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'andThen[]';
+            input.placeholder = '<%= lang.userstories.edit.fields.andThen.placeholder %>';
+            container.appendChild(p);
+            container.appendChild(input);
+        }
+    </script>
+    <footer>
+        <%- include("../partials/footer"); %>
+    </footer>
+</html>

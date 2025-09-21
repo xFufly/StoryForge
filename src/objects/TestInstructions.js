@@ -18,7 +18,7 @@ class TestInstructions {
     #given;  // preconditions
     #when;   // actions
     #and;    // additional conditions or actions, array of strings
-    #but;    // exceptions or alternative conditions, array of strings
+    #but;    // exceptions or alternative conditions
     #then;   // expected outcomes
     #andThen; // additional expected outcomes, array of strings
 

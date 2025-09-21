@@ -101,8 +101,35 @@
                         "SoThat": {
                             "name": "So that",
                             "placeholder": "Explain the benefit or reason"
+                        },
+                        "given": {
+                            "name": "Given",
+                            "placeholder": "State the preconditions"
+                        },
+                        "when": {
+                            "name": "When",
+                            "placeholder": "Describe the action"
+                        },
+                        "and": {
+                            "name": "And",
+                            "placeholder": "Additional conditions or actions"
+                        },
+                        "but": {
+                            "name": "But",
+                            "placeholder": "Mention exceptions or alternatives"
+                        },
+                        "then": {
+                            "name": "Then",
+                            "placeholder": "Define the expected outcome"
+                        },
+                        "andThen": {
+                            "name": "And Then",
+                            "placeholder": "Additional expected outcomes"
                         }
                     }
+                },
+                "editTests": {
+                    "title": "Edit Test Instructions"
                 },
                 "save": "Save Changes",
                 "backlog": "Back to Backlog",

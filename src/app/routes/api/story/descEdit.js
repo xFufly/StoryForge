@@ -1,6 +1,7 @@
 // Route handler for editing a user story's details
 const UserStory = require('../../../../objects/UserStory');
 const StoryInstructions = require('../../../../objects/StoryInstructions');
+const TestInstructions = require('../../../../objects/TestInstructions');
 const { language } = require("../../../../../config.json");
 const translations = require(`../../../../../translations/${language}.json`);
 const fs = require('fs');
@@ -53,16 +54,15 @@ function route(req, res) {
         projects[projectIndex].backlog.userStories[storyIndex].storyPoints,
         projects[projectIndex].backlog.userStories[storyIndex].status,
         projects[projectIndex].backlog.userStories[storyIndex].creationDate,
-        new StoryInstructions(as, IWantsTo, SoThat)
+        new StoryInstructions(as, IWantsTo, SoThat),
+        projects[projectIndex].backlog.userStories[storyIndex].testInstructions ? TestInstructions.fromJSON(projects[projectIndex].backlog.userStories[storyIndex].testInstructions) : null
     );
 
     projects[projectIndex].backlog.userStories[storyIndex] = updatedStory.toJSON();
 
-    console.log(projects[projectIndex].backlog.userStories[storyIndex]);
-
     fs.writeFileSync(dataPath, JSON.stringify(localdata, null, 2));
 
-    res.redirect(`/stories?project=${projectName}`);
+    res.redirect(`/editStoryTests?project=${projectName}&id=${storyId}`);
 }
 
 module.exports = route;

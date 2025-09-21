@@ -51,7 +51,7 @@ function route(req, res) {
         status,
         projects[projectIndex].backlog.userStories[storyIndex].creationDate,
         projects[projectIndex].backlog.userStories[storyIndex].baseInstructions ? StoryInstructions.fromJSON(projects[projectIndex].backlog.userStories[storyIndex].baseInstructions) : null,
-        projects[projectIndex].backlog.userStories[storyIndex].baseInstructions ? TestInstructions.fromJSON(projects[projectIndex].backlog.userStories[storyIndex].baseInstructions) : null
+        projects[projectIndex].backlog.userStories[storyIndex].testInstructions ? TestInstructions.fromJSON(projects[projectIndex].backlog.userStories[storyIndex].testInstructions) : null
     );
 
     projects[projectIndex].backlog.userStories[storyIndex] = updatedStory.toJSON();

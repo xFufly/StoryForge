@@ -13,12 +13,6 @@ function route(req, res) {
         return res.status(400).send('Project and valid storyId query parameters are required');
     }
 
-    const { tests } = req.body;
-
-    if (!tests) {
-        return res.status(400).send('Missing required field: tests');
-    }
-
     const dataPath = path.join(__dirname, '../../../../../data.json');
     const content = fs.readFileSync(dataPath, 'utf8');
     const localdata = JSON.parse(content);
@@ -37,7 +31,25 @@ function route(req, res) {
         return res.status(404).send('User story not found');
     }
 
-    // TODO : Get tests from req.body
+    const { given, when, and, but, then, andThen } = req.body;
+
+    if (!given || !when || !but || !then) {
+        return res.status(400).send('Missing required fields: given, when, but, then');
+    }
+
+    const currentStory = projects[projectIndex].backlog.userStories[storyIndex];
+    const updatedTestInstructions = {
+        given,
+        when,
+        and,
+        but,
+        then,
+        andThen
+    };
+
+    currentStory.testInstructions = updatedTestInstructions;
+
+    projects[projectIndex].backlog.userStories[storyIndex] = currentStory;
 
     fs.writeFileSync(dataPath, JSON.stringify(localdata, null, 2));
 
