@@ -10,7 +10,7 @@ Il est encore en phase de création, seulement les classes principales ont été
 - Création d'une userstory ✅
 - Description et édition des userstories à l'aide de mots clés (En tant que, Je veux, Dans le but) ✅
 - Edition des tests avec un langage GHERKIN affiné (Etant donné, Quand/Lorsque, Et que, Mais, Alors, Et) ✅
-- Visualisation des userstories dans le Product Backlog ❌
+- Visualisation des userstories dans le Product Backlog ⏱️
 - Création et édition des sprints ❌
 - Ajout des userstories dans les Sprint Backlogs ❌
 - Visualisation des userstories dans les Sprint Backlogs ❌

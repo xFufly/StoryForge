@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include("../partials/head"); %>
+    <style>
+        .kanban-board {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .priority-column {
+            background: #e0e0e07c;
+            border-radius: 12px;
+            padding: 10px;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .priority-column h2, .status-column h3 {
+            text-align: center;
+            margin: 0 0 10px 0;
+        }
+
+        .status-column {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        .story-card {
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .story-card-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 4px;
+        }
+
+        .story-card-buttons button {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .story-card p {
+            margin: 0;
+            font-size: 0.85em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <%- include("../partials/header"); %>
+    </header>
+    <main style="padding: 20px;">
+        <header>
+            <button onclick="document.location='/'">🏠</button>
+            <button onclick="document.location='/project?project=<%=projectName%>'">🔙</button>
+        </header>
+        <h2 style="text-align:center;"> <%= projectName %> - <%= lang.userstories.backlog.title %> </h2>
+
+        <% 
+            // Regroup stories by priority then by status
+            const grouped = {};
+            stories.forEach(story => {
+                if (!grouped[story.priority]) grouped[story.priority] = {};
+                if (!grouped[story.priority][story.status]) grouped[story.priority][story.status] = [];
+                grouped[story.priority][story.status].push(story);
+            });
+
+            // Sort priorities descending
+            const sortedPriorities = Object.keys(grouped).sort((a,b) => b - a);
+        %>
+
+        <div class="kanban-board">
+            <% sortedPriorities.forEach(priority => { %>
+                <div class="priority-column">
+                    <h2><%= lang.userstories.backlog.fields.priority.name %> <%= priority %></h2>
+                    <% Object.keys(grouped[priority]).forEach(status => { 
+                        const storiesSorted = grouped[priority][status].sort((a,b) => a.storyPoints - b.storyPoints);
+                    %>
+                        <div class="status-column">
+                            <h3><%= status %></h3>
+                            <% storiesSorted.forEach(story => { %>
+                                <div class="story-card">
+                                    <h4><%= story.title %></h4>
+                                    <p><%= story.description %></p>
+                                    <p><b><%= lang.userstories.create.fields.points.name %>:</b> <%= story.storyPoints %></p>
+                                    <p><b><%= lang.userstories.backlog.fields.createdAt.name %>:</b> <%= new Date(story.createdAt).toLocaleDateString() %></p>
+                                    <div class="story-card-buttons">
+                                        <button onclick="document.location='/editStoryDesc?project=<%=projectName%>&id=<%=story.id%>';">✏️</button>
+                                        <button onclick="if(confirm('<%= lang.userstories.backlog.buttons.deleteConfirm %>')) { document.location='/api/story/delete?project=<%=projectName%>&id=<%=story.id%>'; }">🗑️</button>
+                                        <button onclick="document.location='/editStoryTests?project=<%=projectName%>&id=<%=story.id%>';">🧪</button>
+                                        <button onclick="document.location='/editStoryPriority?project=<%=projectName%>&id=<%=story.id%>&action=up';">🔼</button>
+                                        <button onclick="document.location='/editStoryPriority?project=<%=projectName%>&id=<%=story.id%>&action=down';">🔽</button>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+                    <% }) %>
+                </div>
+            <% }) %>
+        </div>
+    </main>
+    <footer>
+        <%- include("../partials/footer"); %>
+    </footer>
+</body>
+</html>

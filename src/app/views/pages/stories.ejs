@@ -16,6 +16,7 @@
             <section class="liquid-glass">
                 <article>
                     <h3> <%= lang.userstories.title %></h3>
+                    <button onclick="document.location='/whiteBoardProductBacklog?project=<%=projectName%>';">📋</button>
                     <button onclick="document.location='/createStory?project=<%=projectName%>'">+</button>
                 </article>
                 <% if (userstories.length > 0) { %>

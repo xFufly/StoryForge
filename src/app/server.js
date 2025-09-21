@@ -22,6 +22,7 @@ const createStoryRoute = require("./routes/createStory");
 const editStoryRoute = require("./routes/editStory");
 const editStoryDescRoute = require("./routes/editStoryDesc");
 const editStoryTestsRoute = require("./routes/editStoryTests");
+const whiteBoardProductBacklogRoute = require("./routes/whiteBoardProductBacklog");
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -58,6 +59,7 @@ app.get('/createStory', createStoryRoute);
 app.get('/editStory', editStoryRoute);
 app.get('/editStoryDesc', editStoryDescRoute);
 app.get('/editStoryTests', editStoryTestsRoute);
+app.get('/whiteBoardProductBacklog', whiteBoardProductBacklogRoute);
 
 // Start the server
 

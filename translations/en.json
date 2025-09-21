@@ -132,7 +132,35 @@
                     "title": "Edit Test Instructions"
                 },
                 "save": "Save Changes",
-                "backlog": "Back to Backlog",
+                "whiteboard": "View on Whiteboard",
+                "backlog": {
+                    "title": "Backlog",
+                    "fields": {
+                        "sprint": {
+                            "name": "Sprint",
+                            "placeholder": "Select the sprint"
+                        },
+                        "priority": {
+                            "name": "Priority",
+                            "placeholder": "Set the priority level"
+                        },
+                        "status": {
+                            "name": "Status",
+                            "placeholder": "Select the current status"
+                        },
+                        "createdAt": {
+                            "name": "Created At",
+                            "placeholder": "Select the creation date"
+                        },
+                        "updatedAt": {
+                            "name": "Updated At",
+                            "placeholder": "Select the last update date"
+                        }
+                    },
+                    "buttons": {
+                        "deleteConfirm": "Delete User Story"
+                    }
+                },
                 "deleteConfirm": "Are you sure you want to delete this user story? This action cannot be undone."
             }
         }
