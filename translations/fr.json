@@ -1,25 +1,167 @@
 {
     "webui": {
-        "listening": "L'UI Web écoute sur le port",
+        "listening": "Interface web en écoute sur le port",
         "widgets": {
             "projects": {
                 "title": "Vos projets",
-                "none": "Vous n'avez encore aucun projet.",
+                "none": "Vous n'avez pas encore créé de projet.",
                 "create": {
                     "title": "Créer un nouveau projet",
-                    "desc": "Commencez votre aventure en créant un nouveau projet.",
-                    "button": "Nouveau projet",
-                    "field": {
+                    "desc": "Commencez votre parcours en créant un nouveau projet.",
+                    "button": "Nouveau Projet",
+                    "fields": {
                         "name": {
-                            "name": "Nom du projet",
-                            "placeholder": "Entrez le nom de votre projet"
+                            "name": "Nom du Projet",
+                            "placeholder": "Saisissez le nom de votre projet"
                         },
                         "description": {
-                            "name": "Description du projet",
+                            "name": "Description du Projet",
                             "placeholder": "Décrivez brièvement votre projet"
                         }
                     }
+                },
+                "po": "Product Owner",
+                "sm": "Scrum Master",
+                "dev": "Équipe de Développement",
+                "back": "Retour aux projets",
+                "edit": "Modifier le Projet",
+                "delete": "Supprimer le Projet",
+                "save": "Sauvegarder les Modifications",
+                "backlog": "Backlog",
+                "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce projet ? Cette action ne peut pas être annulée.",
+                "counter": {
+                    "stories": "User Stories",
+                    "tasks": "Tâches",
+                    "sprints": "Sprints"
                 }
+            },
+            "userstories": {
+                "title": "User Stories",
+                "none": "Aucune user story disponible. Commencez par en ajouter une nouvelle.",
+                "create": {
+                    "title": "Ajouter une nouvelle user story",
+                    "desc": "Définissez une nouvelle user story pour capturer vos exigences.",
+                    "button": "Nouvelle User Story",
+                    "fields": {
+                        "title": {
+                            "name": "Titre",
+                            "placeholder": "Saisissez le titre de la user story"
+                        },
+                        "description": {
+                            "name": "Description",
+                            "placeholder": "Décrivez la user story en détail"
+                        },
+                        "priority": {
+                            "name": "Priorité",
+                            "placeholder": "Définissez le niveau de priorité"
+                        },
+                        "status": {
+                            "name": "Statut",
+                            "placeholder": "Sélectionnez le statut actuel"
+                        },
+                        "points": {
+                            "name": "Points d'Histoire",
+                            "placeholder": "Estimez l'effort requis"
+                        }
+                    }
+                },
+                "edit": {
+                    "title": "Modifier la User Story",
+                    "desc": "Modifiez les détails de votre user story.",
+                    "next": "Suivant",
+                    "fields": {
+                        "title": {
+                            "name": "Titre",
+                            "placeholder": "Saisissez le titre de la user story"
+                        },
+                        "description": {
+                            "name": "Description",
+                            "placeholder": "Décrivez la user story en détail"
+                        },
+                        "priority": {
+                            "name": "Priorité",
+                            "placeholder": "Définissez le niveau de priorité"
+                        },
+                        "status": {
+                            "name": "Statut",
+                            "placeholder": "Sélectionnez le statut actuel"
+                        },
+                        "points": {
+                            "name": "Points d'Histoire",
+                            "placeholder": "Estimez l'effort requis"
+                        },
+                        "as": {
+                            "name": "En tant que",
+                            "placeholder": "Définissez le rôle de l'utilisateur"
+                        },
+                        "IWantsTo": {
+                            "name": "Je veux",
+                            "placeholder": "Décrivez l'action souhaitée"
+                        },
+                        "SoThat": {
+                            "name": "Afin de",
+                            "placeholder": "Expliquez le bénéfice ou la raison"
+                        },
+                        "given": {
+                            "name": "Étant donné",
+                            "placeholder": "Énoncez les préconditions"
+                        },
+                        "when": {
+                            "name": "Quand",
+                            "placeholder": "Décrivez l'action"
+                        },
+                        "and": {
+                            "name": "Et",
+                            "placeholder": "Conditions ou actions supplémentaires"
+                        },
+                        "but": {
+                            "name": "Mais",
+                            "placeholder": "Mentionnez les exceptions ou alternatives"
+                        },
+                        "then": {
+                            "name": "Alors",
+                            "placeholder": "Définissez le résultat attendu"
+                        },
+                        "andThen": {
+                            "name": "Et alors",
+                            "placeholder": "Résultats attendus supplémentaires"
+                        }
+                    }
+                },
+                "editTests": {
+                    "title": "Modifier les Instructions de Test"
+                },
+                "save": "Sauvegarder les Modifications",
+                "whiteboard": "Voir sur le Tableau",
+                "backlog": {
+                    "title": "Backlog",
+                    "fields": {
+                        "sprint": {
+                            "name": "Sprint",
+                            "placeholder": "Sélectionnez le sprint"
+                        },
+                        "priority": {
+                            "name": "Priorité",
+                            "placeholder": "Définissez le niveau de priorité"
+                        },
+                        "status": {
+                            "name": "Statut",
+                            "placeholder": "Sélectionnez le statut actuel"
+                        },
+                        "createdAt": {
+                            "name": "Créé le",
+                            "placeholder": "Sélectionnez la date de création"
+                        },
+                        "updatedAt": {
+                            "name": "Modifié le",
+                            "placeholder": "Sélectionnez la date de dernière modification"
+                        }
+                    },
+                    "buttons": {
+                        "deleteConfirm": "Supprimer la User Story"
+                    }
+                },
+                "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette user story ? Cette action ne peut pas être annulée."
             }
         }
     },
@@ -27,13 +169,19 @@
         "errors": {
             "missingParameters": "Paramètres manquants",
             "projectExists": "Un projet avec ce nom existe déjà",
-            "projectNotFound": "Projet non trouvé",
-            "invalidData": "Données fournies invalides"
+            "projectNotFound": "Projet introuvable",
+            "invalidData": "Données invalides fournies"
         },
         "successes": {
             "projectCreated": "Projet créé avec succès",
             "projectDeleted": "Projet supprimé avec succès",
             "projectUpdated": "Projet mis à jour avec succès"
         }
+    },
+    "statuses": {
+        "TODO": "À faire",
+        "PROGRESS": "En cours", 
+        "TESTING": "Test",
+        "DONE": "Terminé"
     }
 }

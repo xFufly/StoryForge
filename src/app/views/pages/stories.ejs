@@ -26,8 +26,8 @@
                                 <p><b> <%= story.title %> </b></p>
                                 <p><i> <%= story.description %> </i></p>
                             </div>
-                            <div">
-                                <button onclick="document.location = '/deleteStory?project=<%=projectName%>&id=<%=story.id%>';">🗑️</button>
+                            <div class="button-group">
+                                <button class="delete-btn" onclick="if(confirm('Êtes-vous sûr de vouloir supprimer cette user story ?')) { document.location = '/deleteStory?project=<%=encodeURIComponent(projectName)%>&id=<%=story.id%>'; }">🗑️</button>
                                 <button onclick="document.location = '/editStory?project=<%=projectName%>&id=<%=story.id%>';">📝</button>
                             </div>
                         </article>

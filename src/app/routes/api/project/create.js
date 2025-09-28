@@ -13,8 +13,6 @@ function route(req, res) {
         return res.status(400).send({ error: translations.api.errors.missingParameters });
     }
 
-    const newProject = new Product(name, description, "PO Name", "SM Name");
-
     // Saving the new project to data.json (create it if it does not exist)
 
     const dataFilePath = path.join(__dirname, '../../../../../data.json');
@@ -25,6 +23,13 @@ function route(req, res) {
         data = JSON.parse(fileContent);
     }
 
+    // Check if project with this name already exists
+    const existingProject = data.projects.find(p => p.name === name);
+    if (existingProject) {
+        return res.status(400).send({ error: translations.api.errors.projectExists });
+    }
+
+    const newProject = new Product(name, description, "PO Name", "SM Name");
     data.projects.push(newProject.toJSON());
     fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
 

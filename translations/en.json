@@ -177,5 +177,11 @@
             "projectDeleted": "Project deleted successfully",
             "projectUpdated": "Project updated successfully"
         }
+    },
+    "statuses": {
+        "TODO": "To Do",
+        "PROGRESS": "In Progress", 
+        "TESTING": "Testing",
+        "DONE": "Done"
     }
 }

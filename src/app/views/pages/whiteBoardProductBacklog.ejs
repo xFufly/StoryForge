@@ -30,6 +30,37 @@
             border-radius: 10px;
             padding: 8px;
             margin-bottom: 10px;
+            min-height: 100px;
+        }
+
+        .status-column.dragover {
+            background-color: #e8f5e8;
+            border: 2px dashed #4caf50;
+        }
+
+        /* Prevent text selection during drag */
+        .story-card * {
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* Re-enable pointer events for interactive elements */
+        .story-card .status-select,
+        .story-card .priority-input,
+        .story-card .story-card-buttons button {
+            pointer-events: auto;
+        }
+
+        /* Empty column styling */
+        .empty-column-placeholder {
+            padding: 20px;
+            text-align: center;
+            color: #aaa;
+            font-style: italic;
+            font-size: 0.9em;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            margin: 10px 0;
         }
 
         .story-card {
@@ -41,6 +72,11 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
+            cursor: move;
+        }
+
+        .story-card.dragging {
+            opacity: 0.8;
         }
 
         .story-card-buttons {
@@ -54,11 +90,95 @@
             background: transparent;
             cursor: pointer;
             font-size: 1em;
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+
+        .story-card-buttons button:hover {
+            background-color: #e0e0e0;
         }
 
         .story-card p {
             margin: 0;
             font-size: 0.85em;
+        }
+
+        .loading-indicator {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+
+        .status-select {
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+
+        .priority-input {
+            width: 60px;
+            padding: 2px 4px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 0.8em;
+        }
+
+        /* Success message styling */
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            display: none;
+        }
+
+        /* Smooth transitions */
+        .story-card, .status-column {
+            transition: all 0.3s ease;
+        }
+
+        /* Improved drag feedback */
+        .story-card.drag-preview {
+            transform: rotate(3deg) scale(0.95);
+            opacity: 0.8;
+            z-index: 1000;
+        }
+
+        /* Column highlighting during drag */
+        .status-column.drag-target {
+            background-color: #e8f5e8;
+            border: 2px dashed #4caf50;
+        }
+
+        /* Better button styling */
+        .story-card-buttons button:hover {
+            background-color: #f0f0f0;
+            border-radius: 50%;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .kanban-board {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .priority-column {
+                min-width: auto;
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -72,41 +192,81 @@
             <button onclick="document.location='/project?project=<%=projectName%>'">🔙</button>
         </header>
         <h2 style="text-align:center;"> <%= projectName %> - <%= lang.userstories.backlog.title %> </h2>
+        
+        <div class="success-message" id="success-message">
+            Opération réalisée avec succès !
+        </div>
 
         <% 
+            // Get unique statuses from all stories, with fallback defaults
+            const allStatuses = ['TODO', 'PROGRESS', 'TESTING', 'DONE'];
+            
+            // Get unique priorities
+            const allPriorities = stories.length > 0 ? [...new Set(stories.map(s => s.priority))] : ['1'];
+            
             // Regroup stories by priority then by status
             const grouped = {};
+            
+            // Initialize all combinations of priority/status
+            allPriorities.forEach(priority => {
+                grouped[priority] = {};
+                allStatuses.forEach(status => {
+                    grouped[priority][status] = [];
+                });
+            });
+            
+            // Fill with actual stories
             stories.forEach(story => {
-                if (!grouped[story.priority]) grouped[story.priority] = {};
-                if (!grouped[story.priority][story.status]) grouped[story.priority][story.status] = [];
-                grouped[story.priority][story.status].push(story);
+                if (grouped[story.priority] && grouped[story.priority][story.status]) {
+                    grouped[story.priority][story.status].push(story);
+                }
             });
 
             // Sort priorities descending
-            const sortedPriorities = Object.keys(grouped).sort((a,b) => b - a);
+            const sortedPriorities = allPriorities.sort((a,b) => b - a);
         %>
 
-        <div class="kanban-board">
+        <div class="kanban-board" id="kanban-board">
             <% sortedPriorities.forEach(priority => { %>
-                <div class="priority-column">
+                <div class="priority-column" data-priority="<%= priority %>">
                     <h2><%= lang.userstories.backlog.fields.priority.name %> <%= priority %></h2>
-                    <% Object.keys(grouped[priority]).forEach(status => { 
+                    <% allStatuses.forEach(status => { 
                         const storiesSorted = grouped[priority][status].sort((a,b) => a.storyPoints - b.storyPoints);
                     %>
-                        <div class="status-column">
-                            <h3><%= status %></h3>
+                        <div class="status-column" data-status="<%= status %>" data-priority="<%= priority %>">
+                            <h3><%= statuses[status] || status %></h3>
+                            <% if (storiesSorted.length === 0) { %>
+                                <div class="empty-column-placeholder">Aucune story</div>
+                            <% } %>
                             <% storiesSorted.forEach(story => { %>
-                                <div class="story-card">
+                                <div class="story-card" 
+                                     draggable="true" 
+                                     data-story-id="<%= story.id %>"
+                                     data-current-status="<%= story.status %>"
+                                     data-current-priority="<%= story.priority %>">
                                     <h4><%= story.title %></h4>
                                     <p><%= story.description %></p>
                                     <p><b><%= lang.userstories.create.fields.points.name %>:</b> <%= story.storyPoints %></p>
-                                    <p><b><%= lang.userstories.backlog.fields.createdAt.name %>:</b> <%= new Date(story.createdAt).toLocaleDateString() %></p>
+                                    
+                                    <!-- Quick status change -->
+                                    <select class="status-select" data-story-id="<%= story.id %>">
+                                        <% allStatuses.forEach(status => { %>
+                                            <option value="<%= status %>" <%= story.status === status ? 'selected' : '' %>><%= statuses[status] || status %></option>
+                                        <% }); %>
+                                    </select>
+                                    
+                                    <!-- Quick priority change -->
+                                    <div style="margin-top: 5px;">
+                                        <span style="font-size: 0.8em;">Priority: </span>
+                                        <input type="number" class="priority-input" value="<%= story.priority %>" 
+                                               min="1" max="10" 
+                                               data-story-id="<%= story.id %>">
+                                    </div>
+                                    
                                     <div class="story-card-buttons">
-                                        <button onclick="document.location='/editStoryDesc?project=<%=projectName%>&id=<%=story.id%>';">✏️</button>
-                                        <button onclick="if(confirm('<%= lang.userstories.backlog.buttons.deleteConfirm %>')) { document.location='/api/story/delete?project=<%=projectName%>&id=<%=story.id%>'; }">🗑️</button>
-                                        <button onclick="document.location='/editStoryTests?project=<%=projectName%>&id=<%=story.id%>';">🧪</button>
-                                        <button onclick="document.location='/editStoryPriority?project=<%=projectName%>&id=<%=story.id%>&action=up';">🔼</button>
-                                        <button onclick="document.location='/editStoryPriority?project=<%=projectName%>&id=<%=story.id%>&action=down';">🔽</button>
+                                        <button onclick="document.location='/editStoryDesc?project=<%=projectName%>&id=<%=story.id%>';" title="Edit Description">✏️</button>
+                                        <button onclick="deleteStoryAjax(<%= story.id %>)" title="Delete">�️</button>
+                                        <button onclick="document.location='/editStoryTests?project=<%=projectName%>&id=<%=story.id%>';" title="Edit Tests">🧪</button>
                                     </div>
                                 </div>
                             <% }) %>
@@ -115,9 +275,413 @@
                 </div>
             <% }) %>
         </div>
+
+        <div class="loading-indicator" id="loading">
+            <div>Mise à jour en cours...</div>
+        </div>
     </main>
     <footer>
         <%- include("../partials/footer"); %>
     </footer>
+
+    <script>
+        const projectName = '<%= projectName %>';
+        // Available statuses for reference
+        console.log('Available statuses:', <%- JSON.stringify(allStatuses) %>);
+        
+        // Loading indicator functions
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // Success message function
+        function showSuccessMessage(message) {
+            const successDiv = document.getElementById('success-message');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        // AJAX function to update story status
+        async function updateStoryStatus(storyId, newStatus) {
+            try {
+                const response = await fetch('/api/story/updateStatus', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        project: projectName,
+                        id: storyId,
+                        status: newStatus
+                    })
+                });
+                
+                const result = await response.json();
+                console.log('Status API Response:', response.ok, result);
+                return response.ok;
+            } catch (error) {
+                console.error('Error updating story status:', error);
+                return false;
+            }
+        }
+
+        async function updateStoryPriority(storyId, newPriority) {
+            try {
+                const response = await fetch('/api/story/updatePriority', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        project: projectName,
+                        id: storyId,
+                        priority: newPriority
+                    })
+                });
+                
+                const result = await response.json();
+                console.log('Priority API Response:', response.ok, result);
+                return response.ok;
+            } catch (error) {
+                console.error('Error updating story priority:', error);
+                return false;
+            }
+        }
+
+
+
+        // AJAX function to delete story
+        async function deleteStoryAjax(storyId) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer cette user story ?')) {
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch(`/api/story/delete?project=${projectName}&id=${storyId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
+
+                if (response.ok) {
+                    showSuccessMessage('User story supprimée avec succès !');
+                    console.log('Story deleted successfully');
+                    // Remove the story card from the DOM with animation
+                    const storyCard = document.querySelector(`[data-story-id="${storyId}"]`);
+                    if (storyCard) {
+                        storyCard.style.transition = 'all 0.3s ease';
+                        storyCard.style.opacity = '0';
+                        storyCard.style.transform = 'scale(0.8)';
+                        setTimeout(() => storyCard.remove(), 300);
+                    }
+                } else {
+                    const result = await response.json();
+                    console.error('Error deleting story:', result.error);
+                    alert('Erreur lors de la suppression: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+                alert('Erreur réseau lors de la suppression');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Drag and Drop functionality - Simplified and more robust
+        let draggedElement = null;
+        let dragCounter = 0; // To handle drag leave events properly
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDragAndDrop();
+            attachEventListeners();
+        });
+
+        function initializeDragAndDrop() {
+            // Handle drag start on story cards
+            document.addEventListener('dragstart', function(e) {
+                if (e.target.closest('.story-card')) {
+                    draggedElement = e.target.closest('.story-card');
+                    draggedElement.classList.add('dragging');
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('text/html', '');
+                }
+            });
+
+            // Handle drag end
+            document.addEventListener('dragend', function(e) {
+                if (e.target.closest('.story-card')) {
+                    const card = e.target.closest('.story-card');
+                    card.classList.remove('dragging');
+                    
+                    // Clean up any dragover states
+                    document.querySelectorAll('.status-column').forEach(col => {
+                        col.classList.remove('dragover');
+                    });
+                    
+                    draggedElement = null;
+                    dragCounter = 0;
+                }
+            });
+
+            // Handle drop zones (status columns)
+            document.querySelectorAll('.status-column').forEach(column => {
+                
+                column.addEventListener('dragenter', function(e) {
+                    e.preventDefault();
+                    dragCounter++;
+                    if (draggedElement) {
+                        this.classList.add('dragover');
+                    }
+                });
+
+                column.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                });
+
+                column.addEventListener('dragleave', function(e) {
+                    dragCounter--;
+                    if (dragCounter <= 0) {
+                        this.classList.remove('dragover');
+                        dragCounter = 0;
+                    }
+                });
+
+                column.addEventListener('drop', async function(e) {
+                    e.preventDefault();
+                    this.classList.remove('dragover');
+                    dragCounter = 0;
+                    
+                    if (!draggedElement) {
+                        console.log('No draggedElement found');
+                        return;
+                    }
+                    
+                    if (!(draggedElement instanceof Node)) {
+                        console.error('draggedElement is not a valid Node:', draggedElement);
+                        return;
+                    }
+
+                    const newStatus = this.getAttribute('data-status');
+                    const storyId = draggedElement.getAttribute('data-story-id');
+                    const currentStatus = draggedElement.getAttribute('data-current-status');
+                    const priority = this.getAttribute('data-priority');
+                    const currentPriority = draggedElement.getAttribute('data-current-priority');
+                    
+                    console.log('Drop event:', {
+                        newStatus,
+                        currentStatus,
+                        priority,
+                        currentPriority,
+                        storyId
+                    });
+                    
+                    // Allow move if status changes OR priority changes (convert to string for comparison)
+                    if ((newStatus && newStatus !== currentStatus) || (priority && String(priority) !== String(currentPriority))) {
+                        // Hide placeholder if exists
+                        const placeholder = this.querySelector('.empty-column-placeholder');
+                        if (placeholder) {
+                            placeholder.style.display = 'none';
+                        }
+                        
+                        // Determine which updates to make FIRST
+                        let statusSuccess = true;
+                        let prioritySuccess = true;
+                        
+                        const statusChanged = newStatus && newStatus !== currentStatus;
+                        const priorityChanged = priority && String(priority) !== String(currentPriority);
+                        
+                        if (statusChanged) {
+                            // Status changed - update status
+                            console.log('Updating status from', currentStatus, 'to', newStatus);
+                            statusSuccess = await updateStoryStatus(storyId, newStatus);
+                            if (!statusSuccess) {
+                                console.error('Failed to update status');
+                            }
+                        }
+                        
+                        if (priorityChanged) {
+                            // Priority changed - update priority  
+                            console.log('Updating priority from', currentPriority, 'to', priority);
+                            prioritySuccess = await updateStoryPriority(storyId, priority);
+                            if (!prioritySuccess) {
+                                console.error('Failed to update priority');
+                            }
+                        }
+                        
+                        const success = statusSuccess && prioritySuccess;
+                        
+                        // UPDATE INPUTS BEFORE MOVING THE ELEMENT!
+                        // Find element by story ID instead of relying on draggedElement variable
+                        const storyElement = document.querySelector(`[data-story-id="${storyId}"]`);
+                        
+                        if (statusChanged && statusSuccess && storyElement) {
+                            console.log('Updating status input BEFORE move');
+                            const statusSelect = storyElement.querySelector('.status-select');
+                            if (statusSelect) {
+                                console.log('Found status select, updating from', statusSelect.value, 'to', newStatus);
+                                statusSelect.value = newStatus;
+                                console.log('Status select updated to:', statusSelect.value);
+                            } else {
+                                console.log('Status select not found in story element');
+                            }
+                        }
+                        
+                        if (priorityChanged && prioritySuccess && storyElement) {
+                            console.log('Updating priority input BEFORE move');
+                            const priorityInput = storyElement.querySelector('.priority-input');
+                            if (priorityInput) {
+                                console.log('Found priority input, updating from', priorityInput.value, 'to', priority);
+                                priorityInput.value = priority;
+                                console.log('Priority input updated to:', priorityInput.value);
+                            } else {
+                                console.log('Priority input not found in story element');
+                            }
+                        }
+                        
+                        // Move the element visually AFTER updating inputs
+                        try {
+                            console.log('About to append storyElement:', storyElement);
+                            this.appendChild(storyElement);
+                            console.log('Successfully moved element');
+                        } catch (error) {
+                            console.error('Error moving element:', error, 'storyElement:', storyElement);
+                            return;
+                        }
+                        
+                        if (!success) {
+                            // If AJAX failed, move the element back
+                            const originalColumn = document.querySelector(`[data-status="${currentStatus}"][data-priority="${currentPriority}"]`);
+                            if (originalColumn) {
+                                originalColumn.appendChild(storyElement);
+                                // Show placeholder again if original column is empty
+                                if (originalColumn.querySelectorAll('.story-card').length === 0) {
+                                    const originalPlaceholder = originalColumn.querySelector('.empty-column-placeholder');
+                                    if (originalPlaceholder) {
+                                        originalPlaceholder.style.display = 'block';
+                                    }
+                                }
+                            }
+                        } else {
+                            // Success: update the card's data attributes
+                            console.log('Update successful, updating data attributes');
+                            
+                            if (statusChanged && statusSuccess && storyElement) {
+                                storyElement.setAttribute('data-current-status', newStatus);
+                                console.log('Updated status attribute to', newStatus);
+                            }
+                            if (priorityChanged && prioritySuccess && storyElement) {
+                                storyElement.setAttribute('data-current-priority', priority);
+                                console.log('Updated priority attribute to', priority);
+                            }
+                            
+                            // Alternative approach: Update by story ID globally
+                            console.log('Trying global update for story ID:', storyId);
+                            
+                            if (statusChanged && statusSuccess) {
+                                const globalStatusSelect = document.querySelector(`select[data-story-id="${storyId}"]`);
+                                if (globalStatusSelect) {
+                                    console.log('Found global status select:', globalStatusSelect);
+                                    globalStatusSelect.value = newStatus;
+                                }
+                            }
+                            
+                            if (priorityChanged && prioritySuccess) {
+                                const globalPriorityInput = document.querySelector(`input[data-story-id="${storyId}"]`);
+                                if (globalPriorityInput && globalPriorityInput.type === 'number') {
+                                    console.log('Found global priority input:', globalPriorityInput);
+                                    globalPriorityInput.value = priority;
+                                }
+                            }
+                            
+                            // Check if original column is now empty and show placeholder
+                            const originalColumn = document.querySelector(`[data-status="${currentStatus}"][data-priority="${currentPriority}"]`);
+                            if (originalColumn && originalColumn.querySelectorAll('.story-card').length === 0) {
+                                const originalPlaceholder = originalColumn.querySelector('.empty-column-placeholder');
+                                if (originalPlaceholder) {
+                                    originalPlaceholder.style.display = 'block';
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        }
+
+        function attachEventListeners() {
+            // Use event delegation for better performance
+            document.addEventListener('change', function(e) {
+                if (e.target.classList.contains('status-select')) {
+                    // Skip if this is a programmatic update from drag & drop
+                    if (e.target.hasAttribute('data-programmatic-update')) {
+                        return;
+                    }
+                    
+                    const storyId = e.target.getAttribute('data-story-id');
+                    const newStatus = e.target.value;
+                    const storyCard = e.target.closest('.story-card');
+                    const currentStatus = storyCard.getAttribute('data-current-status');
+                    
+                    if (newStatus !== currentStatus) {
+                        updateStoryStatus(storyId, newStatus).then(success => {
+                            if (success) {
+                                // Move the card to the appropriate column
+                                const priority = storyCard.getAttribute('data-current-priority');
+                                const targetColumn = document.querySelector(`[data-status="${newStatus}"][data-priority="${priority}"]`);
+                                const originalColumn = document.querySelector(`[data-status="${currentStatus}"][data-priority="${priority}"]`);
+                                
+                                if (targetColumn) {
+                                    // Hide placeholder in target column
+                                    const targetPlaceholder = targetColumn.querySelector('.empty-column-placeholder');
+                                    if (targetPlaceholder) {
+                                        targetPlaceholder.style.display = 'none';
+                                    }
+                                    
+                                    targetColumn.appendChild(storyCard);
+                                    
+                                    // Show placeholder in original column if now empty
+                                    if (originalColumn && originalColumn.querySelectorAll('.story-card').length === 0) {
+                                        const originalPlaceholder = originalColumn.querySelector('.empty-column-placeholder');
+                                        if (originalPlaceholder) {
+                                            originalPlaceholder.style.display = 'block';
+                                        }
+                                    }
+                                }
+                            } else {
+                                // Revert select value if update failed
+                                e.target.value = currentStatus;
+                            }
+                        });
+                    }
+                } else if (e.target.classList.contains('priority-input')) {
+                    // Skip if this is a programmatic update from drag & drop
+                    if (e.target.hasAttribute('data-programmatic-update')) {
+                        return;
+                    }
+                    
+                    const storyId = e.target.getAttribute('data-story-id');
+                    const newPriority = e.target.value;
+                    updateStoryPriority(storyId, newPriority);
+                }
+            });
+
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('delete-story-btn')) {
+                    const storyId = e.target.getAttribute('data-story-id');
+                    deleteStoryAjax(storyId);
+                }
+            });
+        }
+    </script>
 </body>
 </html>

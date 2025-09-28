@@ -18,9 +18,17 @@ function route(req, res) {
     }
 
     const { title, description, priority, points, status } = req.body;
+    const validStatuses = ['TODO', 'PROGRESS', 'TESTING', 'DONE'];
 
     if (!title || !priority || !points || !status) {
         return res.status(400).send('Missing required fields: title, priority, points, status');
+    }
+    
+    if (!validStatuses.includes(status)) {
+        return res.status(400).json({ 
+            error: translations.api.errors.invalidData,
+            message: `Status must be one of: ${validStatuses.join(', ')}`
+        });
     }
 
     const dataPath = path.join(__dirname, '../../../../../data.json');

@@ -20,6 +20,7 @@ function route(req, res) {
     
     const data = {
         lang: translations.webui.widgets,
+        statuses: translations.statuses,
         productBacklog: projects[0].backlog,
         projectName: projects[0].name,
         stories: stories

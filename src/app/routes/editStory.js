@@ -48,7 +48,15 @@ function route(req, res) {
                 { name: translations.webui.widgets.userstories.edit.fields.description.name, id: "description", type: "textarea", required: false, value: currentStory.description },
                 { name: translations.webui.widgets.userstories.edit.fields.priority.name, id: "priority", type: "number", required: true, value: currentStory.priority },
                 { name: translations.webui.widgets.userstories.edit.fields.points.name, id: "points", type: "number", required: true, value: currentStory.storyPoints },
-                { name: translations.webui.widgets.userstories.edit.fields.status.name, id: "status", type: "text", required: true, value: currentStory.status }
+                { 
+                    name: translations.webui.widgets.userstories.edit.fields.status.name, 
+                    id: "status", 
+                    type: "select", 
+                    required: true, 
+                    value: currentStory.status,
+                    placeholder: translations.webui.widgets.userstories.edit.fields.status.placeholder,
+                    options: translations.statuses
+                }
             ]
         }
     };

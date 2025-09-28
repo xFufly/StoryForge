@@ -20,7 +20,14 @@ function route(req, res) {
                 { name: translations.webui.widgets.userstories.create.fields.description.name, id: "description", type: "textarea", required: false },
                 { name: translations.webui.widgets.userstories.create.fields.priority.name, id: "priority", type: "number", required: true },
                 { name: translations.webui.widgets.userstories.create.fields.points.name, id: "points", type: "number", required: true },
-                { name: translations.webui.widgets.userstories.create.fields.status.name, id: "status", type: "text", required: true }
+                { 
+                    name: translations.webui.widgets.userstories.create.fields.status.name, 
+                    id: "status", 
+                    type: "select", 
+                    required: true,
+                    placeholder: translations.webui.widgets.userstories.create.fields.status.placeholder,
+                    options: translations.statuses
+                }
             ]
         }
     };

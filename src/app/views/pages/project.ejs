@@ -10,7 +10,10 @@
         <main class="liquid-glass">
             <header>
                 <h2> <%= project.name %> </h2>
-                <button onclick="document.location='/'">🏠</button>
+                <div class="button-group">
+                    <button onclick="document.location='/'">🏠</button>
+                    <button class="delete-btn" onclick="if(confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')) { document.location='/deleteProject?project=<%= encodeURIComponent(project.name) %>'; }">🗑️</button>
+                </div>
             </header>
             <section class="liquid-glass">
                 <% if (project) { %>
